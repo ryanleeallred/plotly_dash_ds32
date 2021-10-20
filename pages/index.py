@@ -5,6 +5,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.express as px
+import pandas as pd
 
 # Imports from this application
 from app import app
@@ -17,7 +18,7 @@ column1 = dbc.Col(
             """
             # Big Title
 
-            ## Smaller TItle
+            ## Smaller Title
 
             ### Even Smaller Title
 
@@ -31,14 +32,22 @@ column1 = dbc.Col(
     md=4,
 )
 
-gapminder = px.data.gapminder()
-fig = px.scatter(gapminder.query("year==2007"), x="gdpPercap", y="lifeExp", size="pop", color="continent",
-           hover_name="country", log_x=True, size_max=60)
+penguins = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/penguins.csv')
+fig = px.scatter(penguins, x="bill_depth_mm", y="bill_length_mm", color="species",
+           hover_name="species", size_max=60)
 
 column2 = dbc.Col(
     [
         dcc.Graph(figure=fig),
     ]
 )
+
+# column2 = dbc.Col(
+#     [
+#         html.Img(src='assets/scatterplot_screenshot.png', width=600)
+#     ],
+#     md=8,
+# )
+
 
 layout = dbc.Row([column1, column2])
